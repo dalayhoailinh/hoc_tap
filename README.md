@@ -49,3 +49,4 @@ dart run bai1.dart
 | Bài | Lõi | Nằm ở đâu trong project |
 |---|---|---|
 | [bai1](bai1/bai1.md) | Rules chỉ cho đổi field được phép | `firestore.rules`: `diff().affectedKeys().hasOnly()` |
+| [bai2](bai2/bai2.md) | Transaction: bị chen thì đọc lại, làm lại | `completeSignUp.ts`, `createBooking`: `runTransaction` |
