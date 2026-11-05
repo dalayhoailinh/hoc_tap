@@ -11,6 +11,8 @@ void main() {
   print('được phép đổi: $allowed');
 
   for (final entry in attempts.entries) {
+    final newDoc = {...oldDoc, ...entry.value};
     print(entry.key);
+    print('newDoc: $newDoc');
   }
 }
