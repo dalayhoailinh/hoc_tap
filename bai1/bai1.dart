@@ -7,16 +7,13 @@ void main() {
     'gửi lại isActive y như cũ': {'isActive': true},
   };
 
-  print('doc: $oldDoc');
-  print('được phép đổi: $allowed');
-
   for (final entry in attempts.entries) {
     final newDoc = {...oldDoc, ...entry.value};
     final changed = newDoc.keys
         .where((key) => newDoc[key] != oldDoc[key])
         .toSet();
-    print(entry.key);
-    print('newDoc: $newDoc');
-    print('changed: $changed');
+    final ok = allowed.containsAll(changed);
+
+    print('${entry.key}: đổi $changed -> ${ok ? 'cho qua' : 'chặn'}');
   }
 }
