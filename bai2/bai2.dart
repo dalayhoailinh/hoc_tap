@@ -20,6 +20,15 @@ void main() {
     buyers.add('Bình');
   } else {
     print('Bình: bị chen, đọc lại');
+    final binhSawAgain = stock;
+    final binhVersionAgain = version;
+    if (binhSawAgain > 0 && binhVersionAgain == version) {
+      stock = binhSawAgain - 1;
+      version++;
+      buyers.add('Bình');
+    } else {
+      print('Bình: hết vé');
+    }
   }
 
   print('Đã bán: $buyers, còn $stock vé');
