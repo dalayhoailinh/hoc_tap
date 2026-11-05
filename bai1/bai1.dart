@@ -12,7 +12,11 @@ void main() {
 
   for (final entry in attempts.entries) {
     final newDoc = {...oldDoc, ...entry.value};
+    final changed = newDoc.keys
+        .where((key) => newDoc[key] != oldDoc[key])
+        .toSet();
     print(entry.key);
     print('newDoc: $newDoc');
+    print('changed: $changed');
   }
 }
