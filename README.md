@@ -43,3 +43,9 @@ dart run bai1.dart
 - Trước khi commit luôn chạy `git status` xem mình đang ở nhánh nào và sắp commit file gì.
 - Lỡ commit nhầm lên `main` mà **chưa push**: `git reset --soft HEAD~1` (bỏ commit, giữ nguyên file).
   Đã push rồi thì hỏi trước khi sửa.
+
+## Danh sách bài
+
+| Bài | Lõi | Nằm ở đâu trong project |
+|---|---|---|
+| [bai1](bai1/bai1.md) | Rules chỉ cho đổi field được phép | `firestore.rules`: `diff().affectedKeys().hasOnly()` |
