@@ -10,6 +10,9 @@ Không có đáp án trong thư mục: bí thì hỏi, người dạy gợi ý t
 - **Cắt vỏ, không cắt lõi.** Bỏ kiểm lỗi, bảo mật, cấu trúc; giữ cái làm nên khái niệm.
 - **Tự viết từ file trắng.** Không chép, không gõ theo.
 
+**Bài ghép** (bài 6) là ngoại lệ: ráp lõi của mấy bài trước thành một thứ chạy thật, nên có nhiều file, có package,
+dài hơn 30 dòng. Lõi vẫn tự viết; vỏ (khung server, widget) có sẵn code trong đề, gõ nhanh.
+
 ## Cách làm một bài
 
 1. Đọc câu lõi và kết quả phải in ra.
@@ -51,3 +54,4 @@ dart run bai1.dart
 | [bai1](bai1/bai1.md) | Rules chỉ cho đổi field được phép | `firestore.rules`: `diff().affectedKeys().hasOnly()` |
 | [bai2](bai2/bai2.md) | Transaction: bị chen thì đọc lại, làm lại | `completeSignUp.ts`, `createBooking`: `runTransaction` |
 | [bai3](bai3/bai3.md) | Idempotency: bấm hai lần vẫn một đơn | `createBooking`: `bookingId = uid_intentId` + `bookingSnap.exists` |
+| [bai4](bai4/bai4.md) | Token là cái vé: server phát, ghi sổ, tra sổ (401/403, hết hạn) | `completeSignUp.ts`: `request.auth`; `firestore.rules`: `isAdmin()` |
