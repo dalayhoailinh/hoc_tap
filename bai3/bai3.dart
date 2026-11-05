@@ -3,8 +3,13 @@ void main() {
 
   void create(String user, String intent) {
     final id = '${user}_${intent}';
+    if (orders.containsKey(id)) {
+      print('$id: đã có, trả lại đơn cũ');
+      return;
+    }
+
     orders[id] = 'pending';
-    print('${id}: tạo mới');
+    print('$id: tạo mới');
   }
 
   create('An', 'a1');
