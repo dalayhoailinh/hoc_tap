@@ -1,0 +1,42 @@
+import 'dart:convert';
+import 'dart:io';
+
+import 'auth.dart';
+import 'db.dart';
+
+void send(HttpRequest req, int status, Object body) {
+  print('${req.method} ${req.uri.path} -> ${status}');
+  req.response
+    ..statusCode = status
+    ..headers.contentType = ContentType.json
+    ..write(jsonEncode(body))
+    ..close();
+}
+
+Future<void> handle(HttpRequest req) async {
+  final route = '${req.method} ${req.uri.path}';
+  final body = req.method == 'POST'
+      ? jsonDecode(await utf8.decoder.bind(req).join())
+      : {};
+  if (route == 'POST /login') {
+    final username = body['username'] as String;
+    final password = body['password'] as String;
+    final token = auth.login(username, password);
+    if (token == null) {
+      send(req, 401, {'message': 'Invalid username or password'});
+      return;
+    }
+    send(req, 200, {'token': token});
+    return;
+  }
+  send(req, 404, {'message': 'Not found'});
+}
+
+void main() async {
+  if (!db.existsSync()) db.writeAsStringSync('An,123,admin\n');
+  final server = await HttpServer.bind('localhost', 3000);
+  print('Server running on http://${server.address.host}:${server.port}');
+  await for (final req in server) {
+    await handle(req);
+  }
+}
