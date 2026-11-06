@@ -56,3 +56,4 @@ dart run bai1.dart
 | [bai3](bai3/bai3.md) | Idempotency: bấm hai lần vẫn một đơn | `createBooking`: `bookingId = uid_intentId` + `bookingSnap.exists` |
 | [bai4](bai4/bai4.md) | Token là cái vé: server phát, ghi sổ, tra sổ (401/403, hết hạn) | `completeSignUp.ts`: `request.auth`; `firestore.rules`: `isAdmin()` |
 | [bai5](bai5/bai5.md) | App nghe stream user, không đi hỏi | `auth_remote_datasource.dart`: `userChanges()`; `app_router.dart`: `.map().distinct()` |
+| [bai6](bai6/bai6.md) | Ghép bài 4 + 5: server Dart + `users.txt` + app Flutter, có refresh token | Cả phần auth: `_SessionGate`, `decideRedirect`, `_hasLiveSession` |
