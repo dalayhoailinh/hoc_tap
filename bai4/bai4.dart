@@ -14,7 +14,11 @@ void main() {
     return null;
   }
 
-  print('An gõ sai: ${login('An', '1234567')}');
-  print('An gõ đúng: ${login('An', '123456')}');
-  print(owner);
+  int adminPage(String? token) {
+    return owner.containsKey(token) ? 200 : 401;
+  }
+
+  final anToken = login('An', '123456');
+  print('An: ${adminPage(anToken)}');
+  print('Lạ: ${adminPage('abc')}');
 }
