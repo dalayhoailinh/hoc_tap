@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'db.dart';
@@ -23,6 +24,13 @@ class Auth {
       return token;
     }
     return null;
+  }
+
+  String? register(String username, String password) {
+    final user = findUser(username);
+    if (user != null) return null;
+    db.writeAsStringSync('$username,$password,user\n', mode: FileMode.append);
+    return login(username, password);
   }
 }
 

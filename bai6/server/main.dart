@@ -29,6 +29,17 @@ Future<void> handle(HttpRequest req) async {
     send(req, 200, {'token': token});
     return;
   }
+  if (route == 'POST /register') {
+    final username = body['username'] as String;
+    final password = body['password'] as String;
+    final token = auth.register(username, password);
+    if (token == null) {
+      send(req, 409, {'message': 'Username already exists'});
+      return;
+    }
+    send(req, 200, {'token': token});
+    return;
+  }
   send(req, 404, {'message': 'Not found'});
 }
 

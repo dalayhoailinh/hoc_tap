@@ -1,1 +1,2 @@
 An,123,admin
+Binh,123,user
