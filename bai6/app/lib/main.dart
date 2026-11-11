@@ -1,70 +1,24 @@
+import 'package:app/admin_page.dart';
 import 'package:app/auth.dart';
+import 'package:app/home_page.dart';
+import 'package:app/login_page.dart';
 import 'package:flutter/material.dart';
 
-void main() => runApp(const MaterialApp(home: LoginPage()));
+void main() => runApp(const MaterialApp(home: SessionGate()));
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
-
-  @override
-  State<LoginPage> createState() => _LoginPageState();
-}
-
-class _LoginPageState extends State<LoginPage> {
-  final _username = TextEditingController();
-  final _password = TextEditingController();
-  var _message = '';
-
-  Future<void> _signIn(String path) async {
-    final res = await auth.signIn(path, _username.text, _password.text);
-    if (mounted) setState(() => _message = res);
-  }
-
-  @override
-  void dispose() {
-    _username.dispose();
-    _password.dispose();
-    super.dispose();
-  }
+class SessionGate extends StatelessWidget {
+  const SessionGate({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(centerTitle: true, title: const Text('Login')),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            TextField(
-              controller: _username,
-              decoration: const InputDecoration(labelText: 'Username'),
-            ),
-            TextField(
-              controller: _password,
-              decoration: const InputDecoration(labelText: 'Password'),
-              obscureText: true,
-            ),
-            const SizedBox(height: 16),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ElevatedButton(
-                  onPressed: () => _signIn('/login'),
-                  child: const Text('Sign In'),
-                ),
-                const SizedBox(width: 16),
-                ElevatedButton(
-                  onPressed: () => _signIn('/register'),
-                  child: const Text('Register'),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            Text(_message),
-          ],
-        ),
-      ),
+    return StreamBuilder<User?>(
+      stream: auth.changes,
+      builder: (context, snapshot) {
+        final user = snapshot.data;
+        if (user == null) return const LoginPage();
+        if (user.role == 'admin') return AdminPage(user: user);
+        return HomePage(user: user);
+      },
     );
   }
 }

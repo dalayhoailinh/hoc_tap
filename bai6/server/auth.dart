@@ -6,6 +6,10 @@ import 'db.dart';
 final owner = <String, String>{};
 
 class Auth {
+  final File db;
+
+  const Auth(this.db);
+
   List<String>? findUser(String username) {
     final lines = db.readAsLinesSync();
     for (final line in lines) {
@@ -34,4 +38,4 @@ class Auth {
   }
 }
 
-final auth = Auth();
+final auth = Auth(db);
