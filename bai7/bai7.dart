@@ -9,7 +9,11 @@ void main() {
 
   int? createBooking(Map<String, Object> request) {
     final price = prices[request['type'] as String];
-    return price == null ? null : price * (request['quantity'] as int);
+    final quantity = request['quantity'] as int;
+
+    return (quantity > 0 && quantity <= 10) && price != null
+        ? price * quantity
+        : null;
   }
 
   print('Bảng giá: $prices');
