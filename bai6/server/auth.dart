@@ -5,6 +5,7 @@ import 'db.dart';
 
 final owner = <String, String>{};
 final expiry = <String, DateTime>{};
+final refreshOwner = <String, String>{};
 
 class Auth {
   final File db;
@@ -26,19 +27,27 @@ class Auth {
     return !exp.isAfter(DateTime.now());
   }
 
-  String? login(String username, String password) {
+  String newToken(String username) {
+    final r = Random.secure();
+    final token = r.nextInt(1 << 32).toRadixString(16);
+    owner[token] = username;
+    expiry[token] = DateTime.now().add(const Duration(seconds: 10));
+    return token;
+  }
+
+  List<String>? login(String username, String password) {
     final user = findUser(username);
     if (user != null && user[1] == password) {
       final r = Random.secure();
-      final token = r.nextInt(1 << 32).toRadixString(16);
-      owner[token] = username;
-      expiry[token] = DateTime.now().add(const Duration(seconds: 10));
-      return token;
+      final token = newToken(username);
+      final refreshToken = r.nextInt(1 << 32).toRadixString(16);
+      refreshOwner[refreshToken] = username;
+      return [token, refreshToken];
     }
     return null;
   }
 
-  String? register(String username, String password) {
+  List<String>? register(String username, String password) {
     final user = findUser(username);
     if (user != null) return null;
     db.writeAsStringSync('$username,$password,user\n', mode: FileMode.append);

@@ -14,6 +14,7 @@ class User {
 
 class Auth {
   String? token;
+  String? refreshToken;
   final _userChanges = StreamController<User?>.broadcast();
   Stream<User?> get changes => _userChanges.stream;
 
@@ -22,8 +23,23 @@ class Auth {
       _url(path),
       headers: token != null ? {'Authorization': 'Bearer $token'} : {},
     );
-    if (res.statusCode == 401) signOut();
+    if (res.statusCode != 401) return res;
+    if (await refresh()) return get(path);
+    signOut();
     return res;
+  }
+
+  Future<bool> refresh() async {
+    if (refreshToken == null) return false;
+    final res = await http.post(
+      _url('/refresh'),
+      body: jsonEncode({'refreshToken': refreshToken}),
+    );
+    if (res.statusCode == 200) {
+      token = jsonDecode(res.body)['token'] as String;
+      return true;
+    }
+    return false;
   }
 
   Future<String?> signIn(String path, String username, String password) async {
@@ -33,6 +49,7 @@ class Auth {
     );
     if (res.statusCode != 200) return jsonDecode(res.body)['message'] as String;
     token = jsonDecode(res.body)['token'] as String;
+    refreshToken = jsonDecode(res.body)['refreshToken'] as String;
     await reload();
     return null;
   }
@@ -53,6 +70,7 @@ class Auth {
 
   Future<void> signOut() async {
     token = null;
+    refreshToken = null;
     _userChanges.add(null);
   }
 }

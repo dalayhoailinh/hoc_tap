@@ -18,27 +18,37 @@ Future<void> handle(HttpRequest req) async {
       ? jsonDecode(await utf8.decoder.bind(req).join())
       : {};
 
+  if (route == 'POST /refresh') {
+    final refreshToken = body['refreshToken'] as String;
+    if (!refreshOwner.containsKey(refreshToken)) {
+      send(req, 401, {'message': 'Invalid refresh token'});
+      return;
+    }
+    send(req, 200, {'token': auth.newToken(refreshOwner[refreshToken]!)});
+    return;
+  }
+
   if (route == 'POST /login') {
     final username = body['username'] as String;
     final password = body['password'] as String;
-    final token = auth.login(username, password);
-    if (token == null) {
+    final List<String>? tokens = auth.login(username, password);
+    if (tokens == null) {
       send(req, 401, {'message': 'Invalid username or password'});
       return;
     }
-    send(req, 200, {'token': token});
+    send(req, 200, {'token': tokens[0], 'refreshToken': tokens[1]});
     return;
   }
 
   if (route == 'POST /register') {
     final username = body['username'] as String;
     final password = body['password'] as String;
-    final token = auth.register(username, password);
-    if (token == null) {
+    final List<String>? tokens = auth.register(username, password);
+    if (tokens == null) {
       send(req, 409, {'message': 'Username already exists'});
       return;
     }
-    send(req, 200, {'token': token});
+    send(req, 200, {'token': tokens[0], 'refreshToken': tokens[1]});
     return;
   }
 
