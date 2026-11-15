@@ -7,11 +7,12 @@ void main() {
   };
 
   int? createBooking(Map<String, Object> request) {
-    return (prices[request['type'] as String])! * (request['quantity'] as int);
+    final price = prices[request['type'] as String];
+    return price == null ? null : price * (request['quantity'] as int);
   }
 
   print('Bảng giá: $prices');
   for (final entry in requests.entries) {
-    print('${entry.key}: ${createBooking(entry.value)}');
+    print('${entry.key}: ${createBooking(entry.value) ?? 'từ chối'}');
   }
 }
