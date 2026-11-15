@@ -36,6 +36,14 @@ class Auth {
     db.writeAsStringSync('$username,$password,user\n', mode: FileMode.append);
     return login(username, password);
   }
+
+  List<Map<String, String>> getAllUsers() {
+    final lines = db.readAsLinesSync();
+    return lines.map((line) {
+      final parts = line.split(',');
+      return {'username': parts[0], 'role': parts[2]};
+    }).toList();
+  }
 }
 
 final auth = Auth(db);

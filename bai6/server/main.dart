@@ -48,8 +48,19 @@ Future<void> handle(HttpRequest req) async {
     send(req, 401, {'message': 'Unauthorized'});
     return;
   }
+  final role = auth.findUser(name)![2];
+
   if (route == 'GET /me') {
-    send(req, 200, {'username': name, 'role': auth.findUser(name)![2]});
+    send(req, 200, {'username': name, 'role': role});
+    return;
+  }
+
+  if (route == 'GET /users') {
+    if (role != 'admin') {
+      send(req, 403, {'message': 'Forbidden'});
+      return;
+    }
+    send(req, 200, {'users': auth.getAllUsers()});
     return;
   }
   send(req, 404, {'message': 'Not found'});
