@@ -18,10 +18,12 @@ class Auth {
   Stream<User?> get changes => _userChanges.stream;
 
   Future<http.Response> get(String path) async {
-    return http.get(
+    final res = await http.get(
       _url(path),
       headers: token != null ? {'Authorization': 'Bearer $token'} : {},
     );
+    if (res.statusCode == 401) signOut();
+    return res;
   }
 
   Future<String?> signIn(String path, String username, String password) async {

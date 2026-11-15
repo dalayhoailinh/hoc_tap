@@ -4,6 +4,7 @@ import 'dart:math';
 import 'db.dart';
 
 final owner = <String, String>{};
+final expiry = <String, DateTime>{};
 
 class Auth {
   final File db;
@@ -19,12 +20,19 @@ class Auth {
     return null;
   }
 
+  bool isExpired(String token) {
+    final exp = expiry[token];
+    if (exp == null) return true;
+    return !exp.isAfter(DateTime.now());
+  }
+
   String? login(String username, String password) {
     final user = findUser(username);
     if (user != null && user[1] == password) {
       final r = Random.secure();
       final token = r.nextInt(1 << 32).toRadixString(16);
       owner[token] = username;
+      expiry[token] = DateTime.now().add(const Duration(seconds: 10));
       return token;
     }
     return null;

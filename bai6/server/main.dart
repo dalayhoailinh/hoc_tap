@@ -44,10 +44,16 @@ Future<void> handle(HttpRequest req) async {
 
   final token = req.headers.value('authorization')?.replaceFirst('Bearer ', '');
   final name = owner[token];
+
   if (name == null) {
     send(req, 401, {'message': 'Unauthorized'});
     return;
   }
+  if (auth.isExpired(token!)) {
+    send(req, 401, {'message': 'Token expired'});
+    return;
+  }
+
   final role = auth.findUser(name)![2];
 
   if (route == 'GET /me') {
