@@ -6,7 +6,7 @@ void main() {
   };
 
   int? createBooking(Map<String, Object> request) {
-    return request['totalAmount'] as int?;
+    return (prices[request['type'] as String])! * (request['quantity'] as int);
   }
 
   print('Bảng giá: $prices');
