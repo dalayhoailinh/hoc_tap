@@ -28,7 +28,12 @@ class _AdminPageState extends State<AdminPage> {
     final user = widget.user;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Trang chủ')),
+      appBar: AppBar(
+        title: const Text('Trang chủ'),
+        actions: [
+          TextButton(onPressed: auth.reload, child: const Text('Tải lại')),
+        ],
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
