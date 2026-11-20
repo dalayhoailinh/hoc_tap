@@ -1,10 +1,10 @@
 void main() {
-  final anBooking1 = {
+  final anBooking = {
     'userId': 'an',
     'status': 'confirmed',
     'startAt': DateTime(2030, 12, 24, 19, 0, 0),
   };
-  final anBooking2 = {
+  final anPending = {
     'userId': 'an',
     'status': 'pending',
     'startAt': DateTime(2030, 12, 24, 19, 0, 0),
@@ -20,11 +20,36 @@ void main() {
     return null;
   }
 
-  print('An hủy đơn 1 lúc 18:00: ${canCancel(anBooking1, 'an', before)}');
-  print(
-    'Bình hủy lúc 18:00 đơn của An: ${canCancel(anBooking1, 'binh', before)}',
+  var passed = 0;
+  void check(String name, String? actual, String? expected) {
+    if (actual == expected) passed++;
+    print(
+      actual == expected
+          ? 'OK   $name'
+          : 'SAI  $name: ra $actual, mong $expected',
+    );
+  }
+
+  check('An hủy lúc 18:00', canCancel(anBooking, 'an', before), null);
+  check(
+    'Bình hủy đơn của An',
+    canCancel(anBooking, 'binh', before),
+    'not-owner',
   );
-  print('An hủy lúc 20:00: ${canCancel(anBooking1, 'an', after)}');
-  print('An hủy đơn 2 lúc 18:00: ${canCancel(anBooking2, 'an', before)}');
-  print('An hủy đơn không có: ${canCancel(null, 'an', before)}');
+  check(
+    'An hủy lúc 20:00 đêm diễn',
+    canCancel(anBooking, 'an', after),
+    'event-started',
+  );
+  check(
+    'An hủy đơn chưa trả tiền',
+    canCancel(anPending, 'an', before),
+    'not-cancellable',
+  );
+  check(
+    'An hủy đơn không có',
+    canCancel(null, 'an', before),
+    'booking-not-found',
+  );
+  print('$passed/5 ca đúng');
 }
