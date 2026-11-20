@@ -12,4 +12,5 @@ void main() {
 
   print('An hủy: ${canCancel(anBooking, 'an')}');
   print('Bình hủy đơn của An: ${canCancel(anBooking, 'binh')}');
+  print('An hủy lúc 20:00 đêm diễn: ${canCancel(anBooking, 'an')}');
 }
