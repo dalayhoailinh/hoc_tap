@@ -7,8 +7,7 @@ void main() {
     if (crash) throw 'mất điện';
     draft['đã bán'] = db['đã bán']! + quantity;
     draft['đơn của An'] = db['đơn của An']! + 1;
-
-    print('nháp: $draft');
+    db.addAll(draft);
   }
 
   book(2);
