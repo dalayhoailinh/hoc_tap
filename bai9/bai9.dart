@@ -2,10 +2,13 @@ void main() {
   final db = {'đơn': 0, 'đã bán': 0, 'đơn của An': 0};
 
   void book(int quantity, {bool crash = false}) {
-    db['đơn'] = db['đơn']! + 1;
+    final draft = <String, int>{};
+    draft['đơn'] = db['đơn']! + 1;
     if (crash) throw 'mất điện';
-    db['đã bán'] = db['đã bán']! + quantity;
-    db['đơn của An'] = db['đơn của An']! + 1;
+    draft['đã bán'] = db['đã bán']! + quantity;
+    draft['đơn của An'] = db['đơn của An']! + 1;
+
+    print('nháp: $draft');
   }
 
   book(2);
