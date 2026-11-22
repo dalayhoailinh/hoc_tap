@@ -1,5 +1,6 @@
 void main() {
   final bookings = <String, Map<String, Object>>{};
+  const price = 100000;
 
   bool rules(String uid, Map<String, Object> doc) =>
       uid == doc['userId'] &&
@@ -11,11 +12,17 @@ void main() {
     print('$uid ghi $id qua cửa app: ${approve ? 'cho qua' : 'bị chặn'}');
   }
 
-  clientWrite('an', 'don1', {
-    'userId': 'an',
-    'status': 'pending',
-    'totalAmount': 200000,
-  });
+  void createBooking(String uid, String id, int quantity) {
+    final doc = {
+      'userId': uid,
+      'status': 'pending',
+      'totalAmount': price * quantity,
+    };
+    bookings[id] = doc;
+    print('$uid gọi server tạo $id: xong');
+  }
+
+  createBooking('an', 'don1', 2);
   clientWrite('ke_xau', 'don2', {
     'userId': 'ke_xau',
     'status': 'confirmed',
