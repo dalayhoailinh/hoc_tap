@@ -4,8 +4,12 @@ void main() {
 
   void onStatusChanged(Map<String, Object> before, Map<String, Object> after) {
     if (before['status'] != after['status'] && after['status'] == 'cancelled') {
-      sold = sold - (before['quantity'] as int);
-      print('trigger: trả ${before['quantity']} vé');
+      if (before['releasedAt'] != after['releasedAt']) {
+        print('trigger: người hủy đã trả kho, bỏ qua');
+      } else {
+        sold = sold - (before['quantity'] as int);
+        print('trigger: trả ${before['quantity']} vé');
+      }
     }
   }
 
