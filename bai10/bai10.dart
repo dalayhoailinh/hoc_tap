@@ -19,6 +19,11 @@ void main() {
     onStatusChanged(before, anOrder);
   }
 
-  update({'status': 'cancelled'});
+  void cancel() {
+    sold = sold - (anOrder['quantity'] as int);
+    update({'status': 'cancelled', 'releasedAt': 1});
+  }
+
+  cancel();
   print('đã bán: $sold');
 }
