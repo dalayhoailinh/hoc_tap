@@ -17,9 +17,9 @@ void main() {
     'totalAmount': 200000,
   });
   clientWrite('ke_xau', 'don2', {
-    'userId': 'an',
-    'status': 'pending',
-    'totalAmount': 200000,
+    'userId': 'ke_xau',
+    'status': 'confirmed',
+    'totalAmount': 0,
   });
   print(bookings);
 }
