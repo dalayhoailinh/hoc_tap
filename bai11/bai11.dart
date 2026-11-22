@@ -2,9 +2,7 @@ void main() {
   final bookings = <String, Map<String, Object>>{};
   const price = 100000;
 
-  bool rules(String uid, Map<String, Object> doc) =>
-      uid == doc['userId'] &&
-      (doc['status'] == 'pending' || doc['status'] == 'confirmed');
+  bool rules(String uid, Map<String, Object> doc) => false;
 
   void clientWrite(String uid, String id, Map<String, Object> doc) {
     final approve = rules(uid, doc);
