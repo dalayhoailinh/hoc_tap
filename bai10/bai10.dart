@@ -16,6 +16,7 @@ void main() {
       print('$key: ${before[key]} -> ${anOrder[key]}');
     }
     onStatusChanged(before, anOrder);
+    onStatusChanged(before, anOrder);
   }
 
   update({'status': 'cancelled'});
